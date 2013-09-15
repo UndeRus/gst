@@ -149,6 +149,12 @@ func (e *Element) GetBus() *Bus {
 	return b
 }
 
+func (e *Element) GetPosition() (bool, int64) {
+	var pos C.gint64
+	format := C.GstFormat(C.GST_FORMAT_TIME)
+	return C.gst_element_query_position(e.g(), &format, &pos) != 0, int64(pos)
+}
+
 // TODO: Move ElementFactoryMake to element_factory.go
 func ElementFactoryMake(factory_name, name string) *Element {
 	fn := (*C.gchar)(C.CString(factory_name))
